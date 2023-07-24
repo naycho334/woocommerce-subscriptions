@@ -65,13 +65,13 @@ class WCS_Cart_Resubscribe extends WCS_Cart_Renewal {
 			$subscription = wcs_get_subscription( $_GET['resubscribe'] );
 			$redirect_to  = get_permalink( wc_get_page_id( 'myaccount' ) );
 
-			if ( wp_verify_nonce( $_GET['_wpnonce'], $subscription->get_id() ) === false ) {
-
-				wc_add_notice( __( 'There was an error with your request to resubscribe. Please try again.', 'woocommerce-subscriptions' ), 'error' );
-
-			} elseif ( empty( $subscription ) ) {
+			if ( empty( $subscription ) ) {
 
 				wc_add_notice( __( 'That subscription does not exist. Has it been deleted?', 'woocommerce-subscriptions' ), 'error' );
+
+			}elseif ( wp_verify_nonce( $_GET['_wpnonce'], $subscription->get_id() ) === false ) {
+
+				wc_add_notice( __( 'There was an error with your request to resubscribe. Please try again.', 'woocommerce-subscriptions' ), 'error' );
 
 			} elseif ( ! current_user_can( 'subscribe_again', $subscription->get_id() ) ) {
 
